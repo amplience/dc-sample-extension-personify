@@ -1,10 +1,10 @@
 import { withStyles, WithStyles, Theme, Chip, Typography, CardHeader, CardContent } from '@material-ui/core';
-import { useUserContext } from '@lib/UserContext';
+import { useUserContext } from '../lib/UserContext';
 
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import { useDebug } from '@components/ui';
-import { AdminCard } from '@components/AdminCard';
+import { useDebug } from './DebugContext';
+import AdminCard from './AdminCard';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -59,17 +59,11 @@ const getNames = (name: string, collection: Array<string>) => {
 };
 
 const TargetingPanel: React.SFC<Props> = ({ classes }) => {
-  const {
-    personalizationTags,
-    setPersonalizationTags,
-    personalizationBehaviors,
-    setPersonalizationBehaviors,
-  } = useDebug();
+  const { personalizationTags, setPersonalizationTags, personalizationBehaviors, setPersonalizationBehaviors } =
+    useDebug() || {};
 
-  const {
-    engines: { personify = {} },
-  } = useUserContext();
-  const { missions = [], mission_tags = [] } = personify;
+  const { engines } = useUserContext() || {};
+  const { missions = [], mission_tags = [] } = engines.personify || {};
 
   const handleClickTag = (name: string) => {
     const updatedTags = getNames(name, personalizationTags);
@@ -94,22 +88,24 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
         />
         <CardContent>
           <ul className={classes.tags}>
-            {missions.map(({ name, val }: { name: string; val: number }) => {
-              const selected = personalizationBehaviors.indexOf(name) !== -1;
+            {
+              missions.map(({ name, val }) => {
+                const selected = personalizationBehaviors.indexOf(name) !== -1;
 
-              return (
-                <li key={name} className={classes.chip}>
-                  <Chip
-                    variant="default"
-                    label={name}
-                    icon={<ProgressIcon value={val} />}
-                    onClick={() => handleClickBehavior(name)}
-                    clickable
-                    color={selected ? 'primary' : undefined}
-                  />
-                </li>
-              );
-            })}
+                return (
+                  <li key={name} className={classes.chip}>
+                    <Chip
+                      variant="default"
+                      label={name}
+                      icon={<ProgressIcon value={val} />}
+                      onClick={() => handleClickBehavior(name)}
+                      clickable
+                      color={selected ? 'primary' : undefined}
+                    />
+                  </li>
+                );
+              }) as any
+            }
             {missions.length === 0 && <Typography variant="caption">No targeting campaign for this page.</Typography>}
           </ul>
         </CardContent>

@@ -8,5 +8,6 @@ export default function getConfig(env: Record<string, any>, overrides: Record<st
       deliveryId: overrides.dcDeliveryId ?? env.REACT_APP_DC_CONTENT_DELIVERY_ID,
       baseUrl: overrides.dcBaseUrl ?? env.REACT_APP_DC_BASEURL,
     },
+    xray: Boolean(new URLSearchParams(window.location.search).get('xray')),
   };
 }

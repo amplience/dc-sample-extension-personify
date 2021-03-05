@@ -1,5 +1,0 @@
-// Rename to 'personify.json'
-{
-  "personifyApi": "{personify api url}",
-  "active": true
-}

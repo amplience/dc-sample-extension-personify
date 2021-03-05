@@ -1,5 +1,5 @@
 import React from 'react';
-import { PersonifyContext, ConfigContext, PersonalizedHeroBannerBlock, WithTheme } from './components';
+import { PersonifyContext, ConfigContext, PersonalizedHeroBannerBlock, WithTheme, XrayPanel } from './components';
 import { getConfig } from './services';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +21,7 @@ function App() {
       <ConfigContext config={config}>
         <PersonifyContext personify={personify}>
           <WithTheme>
+            {config.xray && <XrayPanel></XrayPanel>}
             <PersonalizedHeroBannerBlock></PersonalizedHeroBannerBlock>
           </WithTheme>
         </PersonifyContext>
