@@ -4,6 +4,8 @@ import TagChooserCard from './TagChooserCard';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import { usePersonifyContext } from './PersonifyContext';
+import { useState } from 'react';
+import useInterval from 'react-useinterval';
 
 const styles = (theme: Theme) => ({
   root: {

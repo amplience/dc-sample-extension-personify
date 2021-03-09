@@ -37,7 +37,7 @@ const PersonalizedHeroBannerBlock = (props: Props) => {
   const [group, setGroup] = useState<TargetedContentGroup | undefined>();
 
   const callToActionOnClick = (name: string, url: string): MouseEventHandler<HTMLButtonElement> => (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     const type = 'content';
     if (!personify.config.actions[name]) {
       personify.config.actions[name] = {
@@ -45,30 +45,30 @@ const PersonalizedHeroBannerBlock = (props: Props) => {
         contenturl: url,
         getContentName: () => name,
       };
-      personify.action(name);
     }
+    personify.action(name);
   };
 
   useEffect(() => {
     async function determineVariant() {
       const targetedContent: TargetedContent = await getTargetedContent(dcConfig);
+      let cleanup = () => {};
       if (xray) {
         const behaviors = [...personify.apiMissions];
         const tags = [...personify.apiTags];
+        cleanup = () => {
+          personify.apiMissions = behaviors;
+          personify.apiTags = tags;
+        };
         personify.apiMissions = personify.apiMissions.filter((mission: any) =>
           personalizationBehaviors.includes(mission.name)
         );
         personify.apiTags = personify.apiTags.filter((tag: any) => personalizationTags.includes(tag.tag_name));
-        personify.makeDecision(personify, {}, getVariants(targetedContent), (id: string) =>
-          findVariant(id, targetedContent, setGroup)
-        );
-        personify.apiMissions = behaviors;
-        personify.apiTags = tags;
-      } else {
-        personify.makeDecision(personify, {}, getVariants(targetedContent), (id: string) =>
-          findVariant(id, targetedContent, setGroup)
-        );
       }
+      personify.makeDecision(personify, {}, getVariants(targetedContent), (id: string) => {
+        findVariant(id, targetedContent, setGroup);
+        cleanup();
+      });
     }
 
     determineVariant();

@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 
 export type XrayState = {
+  isOpen: boolean;
+
   personalizationTags: string[];
   personalizationBehaviors: string[];
 
+  setIsOpen: (value: boolean) => void;
   setPersonalizationTags: (value: string[]) => void;
   setPersonalizationBehaviors: (value: string[]) => void;
 };
@@ -19,12 +22,15 @@ interface XrayContextProps {
 }
 
 export const XrayContext = ({ children }: XrayContextProps) => {
+  const [isOpen, setIsOpen] = useState(true);
   const [personalizationTags, setPersonalizationTags] = useState<string[]>([]);
   const [personalizationBehaviors, setPersonalizationBehaviors] = useState<string[]>([]);
 
   return (
     <Context.Provider
       value={{
+        isOpen,
+        setIsOpen,
         personalizationTags,
         setPersonalizationTags,
         personalizationBehaviors,

@@ -73,11 +73,7 @@ const HeroBannerBlock = (props: Props) => {
                 </Typography>
               )}
               {callToAction && (
-                <Button
-                  variant="outlined"
-                  href={callToActionHref}
-                  onClick={callToActionOnClick(title, callToActionHref)}
-                >
+                <Button variant="outlined" onClick={callToActionOnClick(title, callToActionHref)}>
                   {callToAction}
                 </Button>
               )}
