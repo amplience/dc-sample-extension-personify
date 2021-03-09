@@ -1,29 +1,62 @@
-import React from 'react';
-import { PersonifyContext, ConfigContext, PersonalizedHeroBannerBlock, WithTheme, XrayPanel } from './components';
+import React, { useEffect, useState } from 'react';
+import {
+  PersonifyContext,
+  ConfigContext,
+  PersonalizedHeroBannerBlock,
+  WithTheme,
+  XrayPanel,
+  Loader,
+  Page,
+} from './components';
 import { getConfig } from './services';
 import { v4 as uuidv4 } from 'uuid';
+import { XrayContext } from './components/XrayContext';
+import { usePersonify } from './hooks';
 
 declare const PersonifyXP: any;
 
 function App() {
-  const config = getConfig(process.env);
-  const personify = new PersonifyXP({
-    getUserID: () => uuidv4(),
-    api: config.personifyXpApi,
-    debug: true,
-    actions: {},
-  });
+  const config = getConfig(process.env, new URLSearchParams(window.location.search));
+  const [loading, setLoading] = useState(true);
+  const [delay, setDelay] = useState<number | null>(500);
+  const [personify, setPersonify] = useState<any>();
 
-  personify.init();
+  useEffect(() => {
+    const personify = new PersonifyXP({
+      getPersonifyShopperId: 'UNKNOWN',
+      getPersonifySessionId: () => uuidv4(),
+      api: config.personifyXpApi,
+      debug: true,
+      pages: {
+        home: {
+          name: 'home',
+          type: 'content',
+          getContentName: () => '/',
+          isPage: true,
+          track: true,
+        },
+      },
+    });
+    personify.init();
+    setPersonify(personify);
+  }, []);
+
+  usePersonify(
+    () => {
+      setDelay(null);
+      setLoading(false);
+    },
+    delay,
+    personify
+  );
 
   return (
     <div className="App">
       <ConfigContext config={config}>
         <PersonifyContext personify={personify}>
-          <WithTheme>
-            {config.xray && <XrayPanel></XrayPanel>}
-            <PersonalizedHeroBannerBlock></PersonalizedHeroBannerBlock>
-          </WithTheme>
+          <XrayContext>
+            <WithTheme>{loading ? <Loader /> : <Page />}</WithTheme>
+          </XrayContext>
         </PersonifyContext>
       </ConfigContext>
     </div>

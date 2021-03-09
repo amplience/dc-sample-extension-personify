@@ -1,10 +1,9 @@
 import { withStyles, WithStyles, Theme, Chip, Typography, CardHeader, CardContent } from '@material-ui/core';
-import { useUserContext } from '../lib/UserContext';
-
+import { useXrayContext } from './XrayContext';
+import TagChooserCard from './TagChooserCard';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import { useDebug } from './DebugContext';
-import AdminCard from './AdminCard';
+import { usePersonifyContext } from './PersonifyContext';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -58,12 +57,11 @@ const getNames = (name: string, collection: Array<string>) => {
   return collection.includes(name) ? collection.filter(notName(name)) : [...collection, name];
 };
 
-const TargetingPanel: React.SFC<Props> = ({ classes }) => {
+const TagChooser = ({ classes }: Props) => {
+  const personify = usePersonifyContext();
+  const { apiMissions: behaviors = [], apiTags: tags = [] } = personify;
   const { personalizationTags, setPersonalizationTags, personalizationBehaviors, setPersonalizationBehaviors } =
-    useDebug() || {};
-
-  const { engines } = useUserContext() || {};
-  const { missions = [], mission_tags = [] } = engines.personify || {};
+    useXrayContext() || {};
 
   const handleClickTag = (name: string) => {
     const updatedTags = getNames(name, personalizationTags);
@@ -71,13 +69,13 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
   };
 
   const handleClickBehavior = (name: string) => {
-    const updatedBehaviours = getNames(name, personalizationBehaviors);
-    setPersonalizationBehaviors(updatedBehaviours);
+    const updatedbehaviors = getNames(name, personalizationBehaviors);
+    setPersonalizationBehaviors(updatedbehaviors);
   };
 
   return (
     <div className={classes.root}>
-      <AdminCard>
+      <TagChooserCard>
         <CardHeader
           avatar={
             <>
@@ -89,7 +87,7 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
         <CardContent>
           <ul className={classes.tags}>
             {
-              missions.map(({ name, val }) => {
+              behaviors.map(({ name, val }: any) => {
                 const selected = personalizationBehaviors.indexOf(name) !== -1;
 
                 return (
@@ -106,12 +104,12 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
                 );
               }) as any
             }
-            {missions.length === 0 && <Typography variant="caption">No targeting campaign for this page.</Typography>}
+            {behaviors.length === 0 && <Typography variant="caption">No targeting campaign for this page.</Typography>}
           </ul>
         </CardContent>
-      </AdminCard>
+      </TagChooserCard>
 
-      <AdminCard>
+      <TagChooserCard>
         <CardHeader
           avatar={
             <>
@@ -122,7 +120,7 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
         />
         <CardContent>
           <ul className={classes.tags}>
-            {mission_tags.map(({ tag_name, tag_score }) => {
+            {tags.map(({ tag_name, tag_score }: any) => {
               const selected = personalizationTags.indexOf(tag_name) !== -1;
 
               return (
@@ -138,12 +136,12 @@ const TargetingPanel: React.SFC<Props> = ({ classes }) => {
                 </li>
               );
             })}
-            {missions.length === 0 && <Typography variant="caption">No targeting campaign for this page.</Typography>}
+            {tags.length === 0 && <Typography variant="caption">No targeting campaign for this page.</Typography>}
           </ul>
         </CardContent>
-      </AdminCard>
+      </TagChooserCard>
     </div>
   );
 };
 
-export default withStyles(styles)(TargetingPanel);
+export default withStyles(styles)(TagChooser);

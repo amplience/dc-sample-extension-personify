@@ -6,6 +6,14 @@ interface Props {
 }
 
 const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#e91e63',
+      light: '#ed4b82',
+      dark: '#a31545',
+      contrastText: '#fff',
+    },
+  },
   typography: {
     fontFamily: "'roboto', sans-serif",
     fontSize: 12,

@@ -4,5 +4,7 @@ export { default as ConfigContext } from './ConfigContext';
 export { default as PersonifyContext } from './PersonifyContext';
 export { default as TagChooser } from './TagChooser';
 export { default as XrayPanel } from './XrayPanel';
+export { default as Loader } from './Loader';
+export { default as Page } from './Page';
 export * from './ConfigContext';
 export { default as WithTheme } from './WithTheme';

@@ -3,8 +3,8 @@ import { DcConfig } from '../components';
 import { CmsImage } from '../utils';
 
 interface Criteria {
-  tags?: string[];
-  behaviors?: string[];
+  tags: string[];
+  behaviors: string[];
 }
 
 interface ParsedCriteria {
@@ -12,8 +12,9 @@ interface ParsedCriteria {
   behaviours: string;
 }
 
-export interface TargetedContentGroup {
-  criteria?: Criteria;
+export interface TargetedContentGroup extends ParsedCriteria {
+  id: number;
+  criteria: Criteria;
   component: {
     [key: string]: any;
     title: string;
@@ -27,7 +28,7 @@ interface Content extends ContentBody {
   groups?: TargetedContentGroup[];
 }
 
-export default async function getTargetedContent({ deliveryId, ...config }: DcConfig): Promise<TargetedContentGroup[]> {
+export default async function getTargetedContent({ deliveryId, ...config }: DcConfig): Promise<TargetedContent> {
   const client = new ContentClient(config);
   const content = await client.getContentItemById<Content>(deliveryId);
   return parseContent(content);
@@ -36,10 +37,11 @@ export default async function getTargetedContent({ deliveryId, ...config }: DcCo
 function parseContent(content: ContentItem<Content>): TargetedContent {
   return (
     content?.body?.groups?.map((group: any = {}, index: number) => {
-      const { criteria = {}, components = [] } = group;
-
+      const { criteria, components = [] } = group;
+      const { tags = [], behaviors = [] } = criteria;
       return {
         id: index,
+        criteria: { tags, behaviors },
         ...parseCriteria(criteria),
         component: components[0] ?? {},
       };

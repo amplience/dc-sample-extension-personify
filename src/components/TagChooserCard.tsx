@@ -15,7 +15,7 @@ interface Props extends PropsWithChildren<WithStyles<typeof styles>> {
   style?: React.CSSProperties;
 }
 
-const AdminCard: React.SFC<Props> = (props) => {
+const TagChooserCard = (props: Props) => {
   const { classes, className, children, ...other } = props;
 
   return (
@@ -25,4 +25,4 @@ const AdminCard: React.SFC<Props> = (props) => {
   );
 };
 
-export default withStyles(styles)(AdminCard);
+export default withStyles(styles)(TagChooserCard);

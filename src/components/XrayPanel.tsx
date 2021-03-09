@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import { TagChooser } from '.';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -24,8 +25,7 @@ export default function XrayPanel() {
         paper: classes.drawerPaper,
       }}
     >
-      This is the xray panel
-      {/* <TagChooser></TagChooser> */}
+      <TagChooser />
     </Drawer>
   );
 }
