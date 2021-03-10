@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PersonifyContext, ConfigContext, WithTheme, Loader, Page } from './components';
 import { getConfig } from './services';
 import { v4 as uuidv4 } from 'uuid';
-import { useXrayContext, XrayContext } from './components/XrayContext';
+import { XrayContext } from './components/XrayContext';
 import { usePersonify } from './hooks';
 
 declare const PersonifyXP: any;
@@ -12,13 +12,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [delay, setDelay] = useState<number | null>(500);
   const [personify, setPersonify] = useState<any>();
-  const personifySessionId = uuidv4();
-
   useEffect(() => {
     const personify = new PersonifyXP({
-      getUserID: () => 'UNKNOWN',
-      getSessionID: () => personifySessionId,
-      api: config.personifyXpApi,
+      api: `https://${config.personifyXpApi}`,
       debug: true,
       pages: {
         home: {
