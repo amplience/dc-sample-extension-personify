@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PersonifyContext, ConfigContext, WithTheme, Loader, Page } from './components';
 import { getConfig } from './services';
-import { v4 as uuidv4 } from 'uuid';
 import { XrayContext } from './components/XrayContext';
 import { usePersonify } from './hooks';
 
