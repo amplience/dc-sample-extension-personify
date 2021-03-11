@@ -21,6 +21,8 @@ You can override the .env config via query string parameters e.g., http://localh
 - `dc-base-url`: Overrides the DC delivery api endpoint used to fetch content for use with staging
 - `xray` : Allows Personify XP behaviours and tags to be filtered for a preview of what will display
 
+Or when used in a visualisation with staging `http://localhost:3005/?xray=true&dc-base-url={{vse.domain}}&dc-delivery-id={{content.sys.id}}&personify-xp-api=drp0etpyn7.execute-api.eu-west-1.amazonaws.com/amplience-dev-uk-realtime-prod`
+
 Alternatively, you can update the sample configurartion directly via .env:
 
 ```bash

@@ -11,9 +11,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [delay, setDelay] = useState<number | null>(500);
   const [personify, setPersonify] = useState<any>();
+
   useEffect(() => {
     const personify = new PersonifyXP({
-      api: `https://${config.personifyXpApi}`,
+      api: config.personifyXpApi,
       debug: true,
       pages: {
         home: {
