@@ -9,6 +9,7 @@ export interface DcConfig {
 export type Config = {
   personifyXpApi: string;
   dc: DcConfig;
+  xray: boolean;
 };
 
 interface ConfigContextProps {

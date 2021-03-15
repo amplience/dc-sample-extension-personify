@@ -23,6 +23,9 @@ const styles = (theme: Theme) => ({
     padding: '20px 30px',
     textAlign: 'center' as 'center',
   },
+  subTitle: {
+    marginBottom: theme.spacing(2),
+  },
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -65,16 +68,12 @@ const HeroBannerBlock = (props: Props) => {
             <div className={classes.overlayPanel}>
               <Typography variant="h2">{title}</Typography>
               {description && (
-                <Typography variant="subtitle1" component="p">
+                <Typography variant="body1" className={classes.subTitle}>
                   {description}
                 </Typography>
               )}
               {callToAction && (
-                <Button
-                  variant="outlined"
-                  href={callToActionHref}
-                  onClick={callToActionOnClick(title, callToActionHref)}
-                >
+                <Button variant="outlined" onClick={callToActionOnClick(title, callToActionHref)}>
                   {callToAction}
                 </Button>
               )}

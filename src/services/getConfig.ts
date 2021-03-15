@@ -1,12 +1,18 @@
 import { Config } from '../components/ConfigContext';
 
-export default function getConfig(env: Record<string, any>, overrides: Record<string, any> = {}): Config {
+export default function getConfig(env: Record<string, any>, overrides: URLSearchParams): Config {
+  const personifyXpApi = overrides.get('personify-xp-api') ?? env.REACT_APP_PERSONIFY_XP_API;
+  const hubName = overrides.get('dc-hub-name') ?? env.REACT_APP_DC_HUB_NAME;
+  const deliveryId = overrides.get('dc-delivery-id') ?? env.REACT_APP_DC_CONTENT_DELIVERY_ID;
+  const baseUrl = overrides.get('dc-base-url') ?? env.REACT_APP_DC_BASEURL;
+  const xray = overrides.get('xray') ?? env.REACT_APP_XRAY;
   return {
-    personifyXpApi: overrides.personifyXpApi ?? env.REACT_APP_PERSONIFY_XP_API,
+    personifyXpApi: personifyXpApi && `https://${personifyXpApi}`,
     dc: {
-      hubName: overrides.dcHubName ?? env.REACT_APP_DC_HUB_NAME,
-      deliveryId: overrides.dcDeliveryId ?? env.REACT_APP_DC_CONTENT_DELIVERY_ID,
-      baseUrl: overrides.dcBaseUrl ?? env.REACT_APP_DC_BASEURL,
+      hubName,
+      deliveryId,
+      baseUrl: baseUrl && `https://${baseUrl}`,
     },
+    xray,
   };
 }
