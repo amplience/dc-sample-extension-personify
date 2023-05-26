@@ -34,7 +34,7 @@ PORT=
 
 ## How to run locally
 
-This project requires Node 16.x or 18.x to build. Tested with Node 16.16.0, NPM 8.11.0.
+This project requires Node 16.x to build. Tested with Node 16.16.0, NPM 8.11.0.
 
 - `npm i`
 - `npm start`
